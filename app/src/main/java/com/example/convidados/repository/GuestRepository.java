@@ -1,11 +1,28 @@
 package com.example.convidados.repository;
 
+import android.content.Context;
+
 import com.example.convidados.model.GuestModel;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class GuestRepository {
+
+    private static GuestRepository INSTANCE;
+    private GuestDataBaseHelper mHelper;
+
+    private GuestRepository(Context context){
+        this.mHelper = new GuestDataBaseHelper(context);
+    }
+
+    public static GuestRepository getInstance(Context context){
+        if (INSTANCE == null){
+            INSTANCE = new GuestRepository(context);
+        }
+        return INSTANCE;
+    }
+    // Singleton - Design
 
     //CRUD - Create, Read, UpDate, Delete
 
