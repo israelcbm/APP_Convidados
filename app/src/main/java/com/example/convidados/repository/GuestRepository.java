@@ -67,7 +67,19 @@ public class GuestRepository {
         }
     }
 
-    public void delete(GuestModel guest) {
+    public void delete(int id) {
+
+        try{
+            SQLiteDatabase db = this.mHelper.getWritableDatabase();
+
+            String where = DataBaseConstants.GUEST.COLUMNS.ID + " = ?";
+            String[] args = {String.valueOf(id)};
+
+            db.delete(DataBaseConstants.GUEST.TABLE_NAME,where,args);
+            db.close();
+        }catch(Exception e){
+
+        }
 
     }
 }
