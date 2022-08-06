@@ -1,16 +1,16 @@
-package com.example.convidados.ui.gallery;
+package com.example.convidados.ui.all;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-public class GalleryViewModel extends ViewModel {
+public class AllGuestsViewModel extends ViewModel {
 
     private final MutableLiveData<String> mText;
 
-    public GalleryViewModel() {
+    public AllGuestsViewModel() {
         mText = new MutableLiveData<>();
-        mText.setValue("This is gallery fragment");
+        mText.setValue("All Guests");
     }
 
     public LiveData<String> getText() {
