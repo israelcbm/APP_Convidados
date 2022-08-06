@@ -6,7 +6,13 @@ public class GuestModel {
     private String name;
     private int confirmation;
 
-    public GuestModel(String name, int confirmation) {
+    public GuestModel(int id, String name, int confirmation) {
+        this.id = id;
+        this.name = name;
+        this.confirmation = confirmation;
+    }
+
+    public GuestModel( String name, int confirmation) {
         this.id = 0;
         this.name = name;
         this.confirmation = confirmation;
