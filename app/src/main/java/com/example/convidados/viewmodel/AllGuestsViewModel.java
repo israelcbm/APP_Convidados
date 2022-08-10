@@ -1,19 +1,32 @@
 package com.example.convidados.viewmodel;
 
+import android.app.Application;
+
+import androidx.annotation.NonNull;
+import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-public class AllGuestsViewModel extends ViewModel {
+import com.example.convidados.model.GuestModel;
+import com.example.convidados.repository.GuestRepository;
 
-    private final MutableLiveData<String> mText;
+import java.util.List;
 
-    public AllGuestsViewModel() {
-        mText = new MutableLiveData<>();
-        mText.setValue("All Guests");
+public class AllGuestsViewModel extends AndroidViewModel {
+
+    private GuestRepository mRepository;
+
+    private MutableLiveData<List<GuestModel>> mGuestList = new MutableLiveData<>();
+    public LiveData<List<GuestModel>> guestList = this.mGuestList;
+
+    public AllGuestsViewModel(@NonNull Application application) {
+        super(application);
+        this.mRepository = GuestRepository.getInstance(application.getApplicationContext());
     }
 
-    public LiveData<String> getText() {
-        return mText;
+    public void getList(){
+        this.mGuestList.setValue(this.mRepository.getList());
     }
+
 }
