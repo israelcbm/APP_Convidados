@@ -1,5 +1,6 @@
 package com.example.convidados.view;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,12 +15,15 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.convidados.R;
+import com.example.convidados.constants.GuestConstants;
 import com.example.convidados.databinding.FragmentAllGuestsBinding;
 import com.example.convidados.model.GuestModel;
 import com.example.convidados.view.adapter.GuestAdapter;
+import com.example.convidados.view.listener.OnListClick;
 import com.example.convidados.viewmodel.AllGuestsViewModel;
 
 import java.util.List;
+import java.util.prefs.AbstractPreferences;
 
 public class AllGuestsFragment extends Fragment {
 
@@ -27,7 +31,7 @@ public class AllGuestsFragment extends Fragment {
     private ViewHolder mViewHolder = new ViewHolder();
     private GuestAdapter mAdapter = new GuestAdapter();
 
-    public View onCreateView(@NonNull LayoutInflater inflater,ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         this.mViewModel = new ViewModelProvider(this).get(AllGuestsViewModel.class);
         View root = inflater.inflate(R.layout.fragment_all_guests, container, false);
@@ -36,8 +40,19 @@ public class AllGuestsFragment extends Fragment {
         this.mViewHolder.recyclerGuests.setLayoutManager(new LinearLayoutManager(getContext()));
         this.mViewHolder.recyclerGuests.setAdapter(this.mAdapter);
 
-        this.observers();
+        OnListClick listener = new OnListClick() {
+            @Override
+            public void onClick(int id) {
+                Bundle bundle = new Bundle();
+                bundle.putInt(GuestConstants.GUESTID, id);
+                Intent intent = new Intent(getContext(), GuestActivity.class);
+                intent.putExtras(bundle);
+                startActivity(intent);
+            }
+        };
 
+        this.mAdapter.attachListener(listener);
+        this.observers();
         return root;
     }
 
@@ -47,7 +62,7 @@ public class AllGuestsFragment extends Fragment {
         this.mViewModel.getList();
     }
 
-    private void observers(){
+    private void observers() {
         this.mViewModel.guestList.observe(getViewLifecycleOwner(), new Observer<List<GuestModel>>() {
             @Override
             public void onChanged(List<GuestModel> list) {
@@ -57,7 +72,7 @@ public class AllGuestsFragment extends Fragment {
         });
     }
 
-    private static class ViewHolder{
+    private static class ViewHolder {
         RecyclerView recyclerGuests;
     }
 
