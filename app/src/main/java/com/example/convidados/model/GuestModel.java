@@ -2,6 +2,7 @@ package com.example.convidados.model;
 
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 @Entity(tableName = "guest")
@@ -17,6 +18,7 @@ public class GuestModel {
     @ColumnInfo(name = "confirmation")
     private int confirmation;
 
+    @Ignore
     public GuestModel(int id, String name, int confirmation) {
         this.id = id;
         this.name = name;
