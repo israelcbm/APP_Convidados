@@ -8,6 +8,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.example.convidados.model.Feedback;
 import com.example.convidados.model.GuestModel;
 import com.example.convidados.repository.GuestRepository;
 
@@ -18,22 +19,37 @@ public class GuestViewModel extends AndroidViewModel {
     private MutableLiveData<GuestModel> mGuest = new MutableLiveData<>();
     public LiveData<GuestModel> guest = this.mGuest;
 
-    private MutableLiveData<Boolean> mFeedback = new MutableLiveData<>();
-    public LiveData<Boolean> feedback = this.mFeedback;
+    private MutableLiveData<Feedback> mFeedback = new MutableLiveData<>();
+    public LiveData<Feedback> feedback = this.mFeedback;
 
     public GuestViewModel(@NonNull Application application) {
         super(application);
         this.mRepository = GuestRepository.getInstance(application.getApplicationContext());
     }
 
-    public void save(GuestModel guest){
-        if(guest.getId() == 0){
-            this.mFeedback.setValue(this.mRepository.insert(guest));
-        }else
-            this.mFeedback.setValue(this.mRepository.update(guest));
+    public void save(GuestModel guest) {
+
+        if("".equals(guest.getName())){
+            this.mFeedback.setValue(new Feedback("Nome obrigatório!", false));
+            return;
+        }
+
+        if (guest.getId() == 0) {
+            if (this.mRepository.insert(guest)) {
+                this.mFeedback.setValue(new Feedback("Convidado inserido com sucesso!"));
+            } else {
+                this.mFeedback.setValue(new Feedback("Erro inesperado", false));
+            }
+        } else {
+            if (this.mRepository.update(guest)) {
+                this.mFeedback.setValue(new Feedback("Convidado atualizado com sucesso!"));
+            } else {
+                this.mFeedback.setValue(new Feedback("Erro inesperado", false));
+            }
+        }
     }
 
-    public void load(int id){
+    public void load(int id) {
         this.mGuest.setValue(this.mRepository.load(id));
 
     }
