@@ -129,7 +129,7 @@ public class GuestRepository {
         }
     }
 
-    public void delete(int id) {
+    public boolean delete(int id) {
 
         try {
             SQLiteDatabase db = this.mHelper.getWritableDatabase();
@@ -139,9 +139,9 @@ public class GuestRepository {
 
             db.delete(DataBaseConstants.GUEST.TABLE_NAME, where, args);
             db.close();
+            return true;
         } catch (Exception e) {
-
+            return false;
         }
-
     }
 }
